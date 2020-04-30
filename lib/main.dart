@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutterappandroidx/page/CouterWidget.dart';
+import 'package:flutterappandroidx/page/CupertinoTestRoute.dart';
 import 'package:flutterappandroidx/page/TipRoute.dart';
 
 import 'page/NewRoute.dart';
@@ -23,7 +25,9 @@ class TestApp extends StatelessWidget {
       routes: {
         'home': (context) => TestHomePage(title: 'test page'),
         'new page': (context) => NewRoute(),
-        'tip route': (context) => TipRoute(content: ModalRoute.of(context).settings.arguments)
+        'tip route': (context) => TipRoute(content: ModalRoute.of(context).settings.arguments),
+        'cupertino test': (context) => CupertinoTestRoute(),
+        'lifecycle test': (context) => CounterWidget(initCount: 2)
       },
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute(
@@ -93,10 +97,26 @@ class _CreateTestHomePage extends State<TestHomePage> {
 //                  builder: (context) => TipRoute(content: '我是参数'),
 //                ));
                 var result = await Navigator.pushNamed(context, 'tip route', arguments: 'lalala');
-                  print('result is $result');
+//                var parent = context.ancestorWidgetOfExactType(Column);
+//                var title = (parent.debugDescribeChildren() as AppBar).title;
+                  ScaffoldState _state = Scaffold.of(context);
+                  print('result is $result , title =$_state');
+
                 },
               ),
               RandomWidget(),
+              FlatButton(
+                child: Text("cupertino test route"),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'cupertino test');
+                },
+              ),
+              FlatButton(
+                child: Text("lifecycle test route"),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'lifecycle test');
+                },
+              )
             ],
           ),
         ),
